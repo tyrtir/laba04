@@ -11,29 +11,29 @@
 
 Создана структура проекта:
 lab04/<br>
-├── .gitignore
-├── .github/
-│   └── workflows/
-│       └── main.yml
-├── CMakeLists.txt
-├── formatter_lib/
-│   ├── CMakeLists.txt
-│   ├── formatter.h
-│   └── formatter.cpp
-├── formatter_ex_lib/
-│   ├── CMakeLists.txt
-│   ├── formatter_ex.h
-│   └── formatter_ex.cpp
-├── solver_lib/
-│   ├── CMakeLists.txt
-│   ├── solver.h
-│   └── solver.cpp
-├── hello_world_application/
-│   ├── CMakeLists.txt
-│   └── hello_world.cpp
-└── solver_application/
-    ├── CMakeLists.txt
-    └── equation.cpp
+├── .gitignore<br>
+├── .github/<br>
+│   └── workflows/<br>
+│       └── main.yml<br>
+├── CMakeLists.txt<br>
+├── formatter_lib/<br>
+│   ├── CMakeLists.txt<br>
+│   ├── formatter.h<br>
+│   └── formatter.cpp<br>
+├── formatter_ex_lib/<br>
+│   ├── CMakeLists.txt<br>
+│   ├── formatter_ex.h<br>
+│   └── formatter_ex.cpp<br>
+├── solver_lib/<br>
+│   ├── CMakeLists.txt<br>
+│   ├── solver.h<br>
+│   └── solver.cpp<br>
+├── hello_world_application/<br>
+│   ├── CMakeLists.txt<br>
+│   └── hello_world.cpp<br>
+└── solver_application/<br>
+    ├── CMakeLists.txt<br>
+    └── equation.cpp<br>
   
 ## Создаем .gitignore для отсеивания лишних файлов
 .gitignore 
