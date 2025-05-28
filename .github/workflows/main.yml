@@ -1,77 +1,50 @@
-name: Formatter
+name: CMake Build and Test
 
 on:
   push:
-    branches: 
-    - main
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-  workflow_dispatch:
+env:
+  BUILD_TYPE: Release
 
 jobs:
-  Build-library:
+  build:
     runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Build formatter_lib
-        shell: bash
-        run: |
-          cd formatter_lib
-          mkdir build_ && cd build_
-          cmake ..
-          cmake --build .
-          
-      - name: Build formatter_ex_lib
-        shell: bash
-        run: |
-          cd formatter_ex_lib
-          mkdir build_ && cd build_
-          cmake ..
-          cmake --build .
-      - name: Build solver_lib
-        shell: bash
-        run: |
-          cd solver_lib
-          mkdir build_ && cd build_
-          cmake ..
-          cmake --build .
-  
-  Hello-world:
-    runs-on: ubuntu-latest
-    needs: [ Build-library ]
     
     steps:
-      - uses: actions/checkout@v2
-      
-      - name: Build Hello_world
-        shell: bash
-        run: |
-          mkdir build1 && cd build1
-          cmake ..
-          cmake --build .
-  
-      - name: writer
-        shell: bash
-        run: |
-          cd build1/hello_world_application
-          ./hell
-  Build-solver:
-    runs-on: ubuntu-latest
-    needs: [ Build-library ]
-    
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Build solver_application
-        shell: bash
-        run: |
-          mkdir build2 && cd build2
-          cmake ..
-          cmake --build .
-          
-      - name: writer
-        shell: bash
-        run: |
-          cd build2/solver_application
-          ./solve 1 0 -25
+    - uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+
+    - name: Create Build Directory
+      run: mkdir -p build
+
+    - name: Configure CMake
+      working-directory: ./build
+      run: cmake .. -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }}
+
+    - name: Build
+      working-directory: ./build
+      run: cmake --build . --config ${{ env.BUILD_TYPE }}
+
+    - name: Run Hello World Test
+      working-directory: ./build
+      run: |
+        ./hello_world_application/hello_world | grep -q "hello, world!"
+        echo "Hello World test passed!"
+
+    - name: Run Solver Test
+      working-directory: ./build
+      run: |
+        echo "Testing equation solver:"
+        OUTPUT=$(./solver_application/solve <<< "1 0 -25")
+        echo "$OUTPUT"
+        echo "$OUTPUT" | grep -q "x1 = -5.00000"
+        echo "$OUTPUT" | grep -q "x2 = 5.00000"
+        echo "Solver test passed!"
+
