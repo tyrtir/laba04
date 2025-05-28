@@ -42,9 +42,8 @@ jobs:
       working-directory: ./build
       run: |
         echo "Testing equation solver:"
-        OUTPUT=$(/solver_application/solver <<< "1 0 -25")
+        OUTPUT=$(./solver_application/solver <<< "1 0 -25")
         echo "$OUTPUT"
-        echo "$OUTPUT" | grep -q "x1 = -5.00000"
-        echo "$OUTPUT" | grep -q "x2 = 5.00000"
+        echo "$OUTPUT" | grep -q "x1 = -5.00000" || (echo "x1 test failed"; exit 1)
+        echo "$OUTPUT" | grep -q "x2 = 5.00000" || (echo "x2 test failed"; exit 1)
         echo "Solver test passed!"
-
