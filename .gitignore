@@ -1,0 +1,12 @@
+build/
+*/build/
+*.a
+*.so
+*.o
+*.out
+*.exe
+*~
+*.swp
+.DS_Store
+.vscode/
+.idea/
