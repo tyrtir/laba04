@@ -42,7 +42,7 @@ jobs:
       working-directory: ./build
       run: |
         echo "Testing equation solver:"
-        OUTPUT=$(.build/solver_application/solver <<< "1 0 -25")
+        cd .build && OUTPUT=$(./solver_application/solver <<< "1 0 -25")
         echo "$OUTPUT"
         echo "$OUTPUT" | grep -q "x1 = -5.00000"
         echo "$OUTPUT" | grep -q "x2 = 5.00000"
