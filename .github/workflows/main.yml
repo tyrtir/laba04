@@ -10,7 +10,7 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build:
+  build_linux:
     runs-on: ubuntu-latest
     
     steps:
@@ -47,3 +47,21 @@ jobs:
         echo "$OUTPUT" | grep -q "x1 = -5.00000" || (echo "x1 test failed"; exit 1)
         echo "$OUTPUT" | grep -q "x2 = 5.00000" || (echo "x2 test failed"; exit 1)
         echo "Solver test passed!"
+        
+  build_windows:
+        runs-on: windows-latest
+        steps:
+          - name: Checkout
+            uses: actions/checkout@v4
+            
+          - name: Set up MSBuild
+            uses: microsoft/setup-msbuild@v1.0.2
+            
+          - run: |
+              mkdir _build
+              cd _build
+              cmake ..
+              cmake --build .
+              
+          - name: Configure and Build Project
+            uses: threeal/cmake-action@v1.3.0
