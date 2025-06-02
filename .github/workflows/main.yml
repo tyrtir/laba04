@@ -10,20 +10,40 @@ env:
   BUILD_TYPE: Release
 
 jobs:
-  build_Linux:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+   build_linux:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y cmake build-essential clang
+
+      - name: Configure and Build (CMake)
+        run: |
+          mkdir -p _build_${{ matrix.compiler }}
+          cd _build_${{ matrix.compiler }}
+          if [ "${{ matrix.compiler }}" = "gcc" ]; then
+            export CC=gcc
+            export CXX=g++
+          else
+            export CC=clang
+            export CXX=clang++
+          fi
+          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake --build . --config Release
+
+      - name: Run Tests (Optional)
+        run: |
+          cd _build_${{ matrix.compiler }}
+          ctest --output-on-failure
           
-        - run: |
-               cmake -H. -B_build
-               cmake --build _build
-               
-        - name: Configure and Build Project
-          uses: threeal/cmake-action@v1.3.0
-          
-  build_Windows:
+   build_Windows:
         runs-on: windows-latest
         steps:
           - name: Checkout
